@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface: 248 250 252;
+    --card: 255 255 255;
+    --ink: 15 23 42;
+    --muted: 100 116 139;
+    --line: 226 232 240;
+    color-scheme: light;
+  }
+
+  .dark {
+    --surface: 2 6 23;
+    --card: 15 23 42;
+    --ink: 226 232 240;
+    --muted: 148 163 184;
+    --line: 30 41 59;
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans text-[15px] leading-relaxed;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-brand-600 ring-offset-2 ring-offset-surface;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-line bg-card shadow-card;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-line bg-card px-3 py-2.5 text-sm text-ink placeholder:text-muted/70
+      transition-colors focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20;
+  }
+
+  .input-error {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-500/20;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium
+      transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  }
+
+  .btn-secondary {
+    @apply btn border border-line bg-card text-ink hover:bg-slate-50 dark:hover:bg-slate-800;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+
+  .btn-ghost {
+    @apply btn text-muted hover:bg-slate-100 hover:text-ink dark:hover:bg-slate-800;
+  }
+
+  .th {
+    @apply whitespace-nowrap px-3.5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted;
+  }
+
+  .td {
+    @apply whitespace-nowrap px-3.5 py-3.5 text-sm text-ink;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600
+      dark:bg-slate-800 dark:text-slate-300;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded bg-slate-100 dark:bg-slate-800;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}
