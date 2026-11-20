@@ -35,8 +35,11 @@ const dueDateRule = (optional) =>
     .withMessage('Due date must be a valid date')
     .toDate();
 
-const dueTimeRule = (optional) =>
-  (optional ? body('dueTime').optional({ values: 'null' }) : body('dueTime').optional({ values: 'null' }))
+// The client always sends dueTime, using '' when no time is chosen, so empty
+// values must be treated as "no time" rather than as a malformed HH:mm string.
+const dueTimeRule = () =>
+  body('dueTime')
+    .optional({ values: 'falsy' })
     .matches(/^([01][0-9]|2[0-3]):[0-5][0-9]$/)
     .withMessage('Due time must use the HH:mm format');
 

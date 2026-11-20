@@ -30,6 +30,13 @@ describe('POST /api/tasks', () => {
     expect(activities.body.data.some((item) => item.action === 'task_created')).toBe(true);
   });
 
+  it('accepts an empty dueTime sent by the client when no time is chosen', async () => {
+    const res = await createTask(baseTask({ dueTime: '' }));
+
+    expect(res.status).toBe(201);
+    expect(res.body.data.dueTime).toBe('');
+  });
+
   it('rejects a missing title and an invalid due date', async () => {
     const res = await createTask({ dueDate: 'not-a-date' });
 
