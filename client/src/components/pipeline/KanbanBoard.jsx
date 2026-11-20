@@ -12,7 +12,7 @@ const STAGES = [
   { status: 'Lost', dot: 'bg-red-500', ring: 'ring-red-200 dark:ring-red-900' },
 ];
 
-function PipelineCard({ lead, onDragStart, dragging }) {
+function PipelineCard({ lead, onDragStart, onMove, dragging }) {
   return (
     <article
       draggable
@@ -64,6 +64,23 @@ function PipelineCard({ lead, onDragStart, dragging }) {
           <span>{formatDate(lead.createdAt)}</span>
         )}
       </div>
+
+      {/* Drag-and-drop is unavailable on touch screens and to keyboard users, so
+          every card also offers an explicit stage picker. */}
+      <label className="mt-2 block">
+        <span className="sr-only">Move {lead.name} to another stage</span>
+        <select
+          value={lead.status}
+          onChange={(event) => onMove(lead.id, event.target.value)}
+          className="w-full rounded-md border border-line bg-card px-1.5 py-1 text-[11px] text-muted"
+        >
+          {STAGES.map((stage) => (
+            <option key={stage.status} value={stage.status}>
+              {stage.status}
+            </option>
+          ))}
+        </select>
+      </label>
     </article>
   );
 }
@@ -126,6 +143,7 @@ export default function KanbanBoard({ leads, onMove, movingId }) {
                     lead={lead}
                     dragging={dragId === lead.id || movingId === lead.id}
                     onDragStart={setDragId}
+                    onMove={onMove}
                   />
                 ))
               )}

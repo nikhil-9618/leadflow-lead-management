@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CalendarClock, Check, Pencil, RotateCcw, Trash2 } from 'lucide-react';
 import PriorityBadge from '../common/PriorityBadge.jsx';
-import { describeDueDate, formatDate } from '../../utils/formatDate.js';
+import { describeDueDate, formatCalendarDate, isPastCalendarDate } from '../../utils/formatDate.js';
 
 const statusStyles = {
   Pending: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
@@ -12,7 +12,7 @@ const statusStyles = {
 
 export default function TaskItem({ task, onToggleComplete, onEdit, onDelete, busy = false }) {
   const isCompleted = task.status === 'Completed';
-  const isOverdue = !isCompleted && task.status !== 'Cancelled' && new Date(task.dueDate) < new Date(new Date().toDateString());
+  const isOverdue = !isCompleted && task.status !== 'Cancelled' && isPastCalendarDate(task.dueDate);
 
   return (
     <li className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-900/40">
@@ -53,7 +53,7 @@ export default function TaskItem({ task, onToggleComplete, onEdit, onDelete, bus
         <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs text-muted">
           <span className="inline-flex items-center gap-1">
             <CalendarClock size={12} />
-            {formatDate(task.dueDate)}
+            {formatCalendarDate(task.dueDate)}
             {task.dueTime ? ` · ${task.dueTime}` : ''}
             {!isCompleted ? ` (${describeDueDate(task.dueDate)})` : ''}
           </span>

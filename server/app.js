@@ -40,6 +40,9 @@ app.use(
       return callback(new ApiError(403, `Origin ${origin} is not allowed by CORS`));
     },
     credentials: false,
+    // The CSV export reports the row count and filename in these headers; a
+    // browser can only read them if they are explicitly exposed.
+    exposedHeaders: ['Content-Disposition', 'X-Total-Count'],
   })
 );
 

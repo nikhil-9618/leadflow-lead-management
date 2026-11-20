@@ -14,11 +14,47 @@ const dateTimeFormatter = new Intl.DateTimeFormat('en-IN', {
 
 const monthFormatter = new Intl.DateTimeFormat('en-IN', { month: 'short', year: '2-digit' });
 
+const calendarFormatter = new Intl.DateTimeFormat('en-IN', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
 export function formatDate(value) {
   if (!value) return '—';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '—';
   return dateFormatter.format(date);
+}
+
+/**
+ * Date-only values (task due dates, scheduled follow-ups) are stored at UTC
+ * midnight. Formatting them in the viewer's timezone shifts them back a day for
+ * anyone behind UTC, so the calendar date is always rendered in UTC.
+ */
+export function formatCalendarDate(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '—';
+  return calendarFormatter.format(date);
+}
+
+/** The calendar date of a value as local midnight, so day maths ignores timezone drift. */
+export function toCalendarDay(value) {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+}
+
+/** True when a date-only value falls before today's calendar date. */
+export function isPastCalendarDate(value) {
+  const day = toCalendarDay(value);
+  if (!day) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return day < today;
 }
 
 export function formatDateTime(value) {
@@ -61,18 +97,11 @@ export function formatCurrency(value) {
 
 /** Human relative label used for due dates (Today, Tomorrow, Overdue …). */
 export function describeDueDate(value) {
-  if (!value) return '';
-  const due = new Date(value);
-  if (Number.isNaN(due.getTime())) return '';
+  const target = toCalendarDay(value);
+  if (!target) return '';
 
-  const startOfDay = (date) => {
-    const copy = new Date(date);
-    copy.setHours(0, 0, 0, 0);
-    return copy;
-  };
-
-  const today = startOfDay(new Date());
-  const target = startOfDay(due);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
 
   if (diffDays === 0) return 'Today';
