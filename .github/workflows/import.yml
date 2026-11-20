@@ -1,0 +1,35 @@
+name: import-source
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency: import-source
+
+jobs:
+  import:
+    if: github.repository == 'nikhil-9618/leadflow-lead-management'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and extract the source archive
+        run: |
+          curl -fsSL --retry 3 --retry-delay 5 -o /tmp/src.tar.gz "https://leadflow-source-transfer-bg5tqe-preview.freebuff.site/repo.tar.gz"
+          tar -xzf /tmp/src.tar.gz -C .
+
+      - name: Commit the imported tree
+        run: |
+          rm -f .github/workflows/import.yml
+          git config user.name "LeadFlow import"
+          git config user.email "import@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to import"
+            exit 0
+          fi
+          git commit -m "chore: import LeadFlow V2 application source"
+          git push
