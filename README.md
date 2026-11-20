@@ -732,35 +732,4 @@ The repository ships with everything needed for the assignment's target topology
 10. Docker Compose for one-command local startup.
 
 ---
-
-## Assignment checklist
-
-| Requirement | Status |
-| --- | --- |
-| React + Vite + JavaScript + Tailwind + Router + Axios + Lucide | ✅ |
-| Node + Express + Mongoose + MongoDB | ✅ |
-| dotenv, express-validator, Helmet, CORS, Morgan, express-rate-limit | ✅ |
-| All required endpoints (`/health`, `/leads`, `/leads/stats`, `/leads/:id`, CRUD) | ✅ |
-| Correct status codes (200/201/400/404/409/429/500) | ✅ |
-| Dashboard stats from MongoDB aggregation, never hardcoded | ✅ |
-| Search by name/email/phone/company, server-side and case-insensitive | ✅ |
-| Status + source + priority + date filters, combined | ✅ |
-| Pagination and newest/oldest sorting | ✅ |
-| Add / view / edit / delete leads, with confirmation | ✅ |
-| Frontend **and** backend validation | ✅ |
-| Responsive UI in the specified palette | ✅ |
-| Pipeline (Kanban) with persisted drag-and-drop | ✅ |
-| Activity history in a separate collection, append-only | ✅ |
-| Tasks and follow-ups backed by MongoDB | ✅ |
-| Rule-based lead scoring with explanation | ✅ |
-| CSV export (all/filtered/selected) and validated import | ✅ |
-| Light and dark mode | ✅ |
-| Loading skeletons, empty states, error states, toasts | ✅ |
-| Backend tests, frontend tests, security tests | ✅ 79 + 28 passing |
-| README, `.env.example` files, `.env` ignored | ✅ |
-| Production build succeeds | ✅ |
-| Deployment configuration for Vercel + Render + Atlas | ✅ (configuration) |
-
----
-
 Built by **Nikhil** as the Meru Technosoft Full Stack Developer assignment submission.
