@@ -22,9 +22,6 @@ export default function Layout() {
             <Outlet />
           </div>
         </main>
-        <footer className="border-t border-line px-4 py-4 text-center text-xs text-muted sm:px-6 lg:px-8">
-          LeadFlow v2 · React, Express &amp; MongoDB · Rule-based lead scoring, not machine learning
-        </footer>
       </div>
     </div>
   );
