@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: leadflow-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set these in the Render dashboard (or sync them from your secret store).
+      - key: MONGODB_URI
+        sync: false
+      - key: CLIENT_URL
+        sync: false
